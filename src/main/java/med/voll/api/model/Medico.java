@@ -14,6 +14,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import med.voll.api.dto.endereco.Endereco;
+import med.voll.api.dto.medico.AtualizarDados;
 import med.voll.api.dto.medico.DadosCadastroMedico;
 import med.voll.api.dto.medico.Especialidade;
 
@@ -39,12 +40,29 @@ public class Medico {
     @Embedded
     private Endereco endereco;
 
+    private Boolean ativo;
+
     public Medico(DadosCadastroMedico dadosCadastroMedico) {
+        this.ativo = true;
         this.nome = dadosCadastroMedico.nome();
         this.email = dadosCadastroMedico.email();
         this.telefone = dadosCadastroMedico.telefone();
         this.crm = dadosCadastroMedico.crm();
         this.especialidade = dadosCadastroMedico.especialidade();
         this.endereco = new Endereco(dadosCadastroMedico.endereco());
+    }
+
+    public void atualizarInformacoes(AtualizarDados dados) {
+
+        if (dados.nome() != null)
+            this.nome = dados.nome();
+        if (dados.telefone() != null)
+            this.telefone = dados.telefone();
+        if (dados.endereco() != null)
+            this.endereco.atualizarEndereco(dados.endereco());
+    }
+
+    public void excluir() {
+        this.ativo = false;
     }
 }
